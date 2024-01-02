@@ -1,0 +1,58 @@
+W tabeli 1 podano wybór funkcji PHP do obsługi bazy danych.
+Wymagania dotyczące skryptu:
+− Napisany w języku PHP, umieszczony w pliku biblioteka.php
+− Skrypt łączy się z serwerem bazodanowym na localhost, użytkownik root bez hasła, baza danych
+o nazwie biblioteka
+− Na końcu działania skrypt zamyka połączenie z serwerem
+
+
+Skrypt 1
+− Pobiera dane z formularza
+− Wyświetla napis „Dodano czytelnika <imie> <nazwisko>”, gdzie pola <> pobrano z formularza
+− Wysyła do bazy danych zmodyfikowane zapytanie 1 tak, że wstawia do bazy danych dane
+z formularza
+
+<div id="left">
+    <h4>Dodaj czytelnika</h4>
+    <form action="biblioteka2.php" method="post">
+        imię:
+        <input type="text" name="imie" id=""><br>
+        nazwisko:
+        <input type="text" name="nazwisko" id=""><br>
+        symbol:
+        <input type="number" name="symbol" id=""><br>
+        <input type="submit" value="AKCEPTUJ">
+        <!-- skrypt 1 -->
+        <?php 
+         $db = mysqli_connect('localhost','root','','biblioteka'); //connect
+        if($_POST){                                                //jeżeli kliknie zadeklaruj dane
+        $imie = $_POST['imie'];
+        $nazwisko = $_POST['nazwisko'];
+        $symbol = $_POST['symbol'];
+
+       
+        $query = "INSERT INTO `czytelnicy` (`id`, `imie`, `nazwisko`, `kod`) VALUES (NULL, '$imie', '$nazwisko', '$symbol')";
+        $wynik = mysqli_query($db, $query);
+        if($wynik){                                                //jeżeli prześle dane to wyświetl napis
+            echo "Dodano czytelnika $imie $nazwisko";
+        }
+    }
+        ?>
+    </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+Skrypt 2
+− Wysyła do bazy danych zapytanie 2
+− Pobrane zapytaniem imiona i nazwiska czytelników wypisywane są jako elementy listy numerowanej
+(uporządkowanej) 
