@@ -1,0 +1,49 @@
+1. Wymagania dotyczące skryptu:
+− Napisany w języku PHP, umieszczony w pliku biblioteka.php
+− Skrypt łączy się z serwerem bazodanowym na localhost, użytkownik root bez hasła, baza danych
+o nazwie biblioteka
+− Na końcu działania skrypt zamyka połączenie z serwerem
+Skrypt 1
+− Wysyła do bazy danych zapytanie 1
+− Pobrane zapytaniem imiona i nazwiska autorów wypisywane są jako elementy listy numerowanej
+(uporządkowanej)
+Skrypt 2
+− Pobiera dane z formularza
+− Wysyła do bazy danych zmodyfikowane zapytanie 2 tak, że wstawia do bazy danych dane
+z formularza
+− Wyświetla napis „Czytelnik <imie> <nazwisko> został(a) dodany do bazy danych” (gdzie pola <>
+są pobrane z formularza)
+
+
+skrypt 1:
+w html tworzysz listę numerowaną ol, której elementy li są generowane skryptem 1
+
+<ol>
+  <?php 
+        $db = mysqli_connect('localhost','root','','egzamin_03');
+        $query1 = "SELECT imie, nazwisko FROM `autorzy` ORDER BY nazwisko ASC";
+        $wynik1 = mysqli_query($db, $query1);
+        while($wiersz1 = mysqli_fetch_row($wynik1)){
+          echo "<li>$wiersz1[0] $wiersz1[1] </li>";
+        }
+
+  ?>
+
+</ol>
+
+skrypt2:
+<?php
+     if($_POST){
+     $imie = $_POST['imie'];
+     $nazwisko = $_POST['nazwisko'];
+     $symbol = $_POST['symbol'];
+     $query2 = "INSERT INTO `czytelnicy` (`id`, `imie`, `nazwisko`, `kod`) VALUES (NULL, '$imie ', '$nazwisko', '$symbol')";
+     $wynik2 = mysqli_query($db, $query2);
+     if($wynik2){
+        echo "Dodano $imie $nazwisko do bazy danych";
+     }
+}
+
+mysqli_close($db);
+
+?>
